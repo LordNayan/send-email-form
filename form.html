@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Daily Pro Inception Updates</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background-color: #ffffff;
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333333;
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-weight: bold;
+        color: #555555;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      textarea,
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        font-size: 14px;
+        resize: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #0078d7;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #005bb5;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 12px;
+        color: #888888;
+      }
+    </style>
+    <script>
+      async function handleSubmit(event) {
+        event.preventDefault(); // Prevent default form submission
+        const form = event.target;
+
+        const description = form.description.value.trim();
+        const ticketNumber = form.ticketNumber.value.trim();
+
+        // Validation
+        if (!description) {
+          alert('Description cannot be empty.');
+          return;
+        }
+
+        if (ticketNumber && isNaN(ticketNumber)) {
+          alert('Ticket number must be a valid number.');
+          return;
+        }
+
+        // If ticket number is empty, set default value
+        const data = {
+          description,
+          ticketNumber: ticketNumber || 'Yet to assign a ticket'
+        };
+
+        try {
+          const response = await fetch('/send-mail', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            alert('Email sent successfully!');
+          } else {
+            alert('Email not sent. Please try again.');
+          }
+        } catch (error) {
+          alert('Email not sent. Please try again.');
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Daily Pro Inception Updates</h1>
+      <form onsubmit="handleSubmit(event)">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="5" placeholder="Enter task updates here..."></textarea>
+
+        <label for="ticketNumber">Ticket Number:</label>
+        <input type="text" id="ticketNumber" name="ticketNumber" placeholder="Enter ticket number here..." />
+
+        <button type="submit">Send Mail</button>
+      </form>
+      <div class="footer">Powered by Nayan</div>
+    </div>
+  </body>
+</html>
