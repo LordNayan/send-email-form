@@ -41,12 +41,15 @@ app.post('/send-mail', async (req, res) => {
         html: `
           <p>Hi Arvind,</p>
           <p>Hope you are doing well!</p>
-          <p>Please find the daily status report for ${new Date().toLocaleDateString('en-IN')} regarding my tasks.</p>
+          <p>Please find the daily status report for ${new Date().toLocaleDateString(
+            "en-IN",
+            { timeZone: "Asia/Kolkata" }
+          )} regarding my tasks.</p>
           <p><strong>Task Updates:</strong></p>
           <p>${description}</p>
           <p><strong>Ticket Number:</strong> ${ticketNumber}</p>
           <p>Best,<br/>Nayan</p>
-        `
+        `,
       };
   
       const info = await transporter.sendMail(mailOptions);
