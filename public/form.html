@@ -111,6 +111,10 @@
         } catch (error) {
           alert('Email not sent. Please try again.');
         }
+        finally{
+          form.description.value = '';
+          form.ticketNumber.value = '';
+        }
       }
     </script>
   </head>
